@@ -14,7 +14,7 @@ smtp_username = your_email@example.com
 smtp_password = your_password
 email_from = your_email@example.com
 email_to = recipient@example.com
-email_subject = Hummers Imperva Bot: Alert issue
+email_subject = Imperva Bot: Alert issue
 smtp_timeout = 10
 email_template = email_template.html
 

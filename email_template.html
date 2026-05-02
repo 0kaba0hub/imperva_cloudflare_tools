@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Error Alert</title>
+    <title>Error Notification</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,8 +13,8 @@
             padding: 0;
         }
         .container {
-            width: 80%;
-            margin: 0 auto;
+            max-width: 600px;
+            margin: 20px auto;
             background-color: #ffffff;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -45,16 +45,13 @@
     <div class="container">
         <h1>Error Notification</h1>
         <div class="content">
-            <p><strong>Dear Team,</strong></p>
-            <p>We encountered the following issue:</p>
+            <p>The following issue was detected:</p>
             <p class="error">{{ error_message }}</p>
-            <p>Please look into this issue and fix the issue as soon as possible.</p>
+            <p>Please investigate and resolve the issue as soon as possible.</p>
         </div>
         <div class="footer">
-            <p>Thank you for your patience and understanding.</p>
-            <p>Best regards, <br>Your monitoring bot</p>
+            <p>Your monitoring bot</p>
         </div>
     </div>
 </body>
 </html>
-

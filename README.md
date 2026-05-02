@@ -2,16 +2,15 @@
 
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](LICENSE)
 
-Python tool that keeps Imperva and Cloudflare proxy IP ranges up to date on your web servers. It fetches the current IP lists from both providers, updates allowlist files and trusted-proxy configs, reloads Apache or pushes updates to F5 BIG-IP, and sends email/Flock notifications when changes are detected.
+Python tool that keeps Imperva and Cloudflare proxy IP ranges up to date on your web servers. Fetches current IP lists from both providers, updates allowlist files and trusted-proxy configs, reloads Apache or pushes updates to F5 BIG-IP, and sends email/Flock notifications when changes are detected.
 
 ---
 
-## Prerequisites
+## Requirements
 
 - Python 3.6+
 - `requests` library (`pip install requests`)
 - Apache with `mod_remoteip` enabled **or** F5 BIG-IP with iControl REST API access
-- Write access to the IP list files and permission to reload Apache
 
 ---
 
@@ -22,6 +21,7 @@ git clone https://github.com/0kaba0hub/imperva_cloudflare_tools.git /usr/local/s
 cd /usr/local/src/imperva_cloudflare
 pip install requests
 cp config.ini-example config.ini
+chmod +x update_ips.py
 ```
 
 ---
@@ -55,6 +55,7 @@ Edit `config.ini`. All sections are described below.
 |:----|:------------|
 | `enable_flock` | `true` / `false` |
 | `flock_webhook_url` | Incoming webhook URL |
+| `flock_timeout` | HTTP timeout in seconds |
 
 ### `[Files]`
 
@@ -160,9 +161,10 @@ Expected output (debug enabled):
 
 ```
 2024-12-24 13:10:01,645 - INFO  - Selected provider: Cloudflare
-2024-12-24 13:10:01,731 - DEBUG - Received a successful response from API.
-2024-12-24 13:10:01,732 - DEBUG - Old IPv4 ranges: [...]
+2024-12-24 13:10:01,645 - DEBUG - Start cloudflare_process_ip_ranges()
+2024-12-24 13:10:01,731 - DEBUG - Old IPv4 ranges: [...]
 2024-12-24 13:10:01,732 - DEBUG - New IPv4 ranges: [...]
+2024-12-24 13:10:01,732 - INFO  - No changes detected. No action needed.
 ```
 
 ### 4. Disable debug logging
@@ -178,7 +180,16 @@ Set `debug = false` in the `[Logging]` section of `config.ini`.
 
 ---
 
+## Notifications
+
+When an error occurs (API failure, Apache reload failure, write error), the script sends notifications to whichever channels are enabled in `config.ini`:
+
+- **Email** — HTML alert via SMTP (`enable_smtp = true`)
+- **Flock** — message to a webhook channel (`enable_flock = true`)
+- Both or neither can be enabled independently
+
+---
+
 ## License
 
 [GPL-3.0](LICENSE)
-
